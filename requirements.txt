@@ -1,0 +1,59 @@
+# Core
+python-dotenv
+pydantic
+
+# Gmail API
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+
+# LLM & RAG (V1 - Gemini)
+google-generativeai
+langchain
+langchain-google-genai
+langchain-community
+langchain-openai
+langgraph
+
+# Vector Store
+chromadb
+
+# Database
+psycopg2-binary
+
+# OCR
+Pillow
+
+# Dashboard
+streamlit
+plotly
+
+# Benchmark / Data
+pandas
+numpy
+
+# BERT Classifier (V2)
+torch
+transformers>=4.40.0,<4.45.0
+datasets>=2.18.0
+scikit-learn>=1.4.0
+accelerate>=1.1.0
+protobuf
+matplotlib
+sentencepiece
+tiktoken
+
+# BERT API (V2)
+fastapi
+uvicorn[standard]
+httpx
+
+# MLOps (V2)
+mlflow>=2.10.0
+prefect>=2.14.0
+
+# Hybrid RAG (V2)
+sentence-transformers
+rank-bm25
+rapidfuzz
+langchain-text-splitters

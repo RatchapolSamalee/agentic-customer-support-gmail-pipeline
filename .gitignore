@@ -1,0 +1,30 @@
+.env
+token.json
+token_sender.json
+credentials.json
+*.json
+!package.json
+!training/data/*.json
+__pycache__/
+*.pyc
+chroma_db/
+attachments/
+.venv/
+venv/
+mlflow.db
+mlruns/
+models/
+tests/
+QUICKSTART.md
+docker-commands.md
+Project Description/
+scripts/migrate_*.py
+scripts/convert_docs_to_md.py
+scripts/run_benchmark.py
+scripts/reset_pipeline_data.py
+scripts/gmail_watch.py
+scripts/send_test_emails.py
+scripts/test_rag.py
+mlartifacts/
+test-docker/
+deploy guide.md

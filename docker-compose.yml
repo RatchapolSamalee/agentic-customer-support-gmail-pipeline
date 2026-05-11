@@ -1,0 +1,142 @@
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: autogmail
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mlflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu
+    restart: always
+    working_dir: /app
+    volumes:
+      - mlflow_data:/app/mlflow_data
+      - ./mlartifacts:/app/mlartifacts
+    ports:
+      - "5000:5000"
+    command: >
+      mlflow ui --backend-store-uri sqlite:////app/mlflow_data/mlflow.db
+      --host 0.0.0.0 --port 5000
+      --allowed-hosts "*"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:5000 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  bert-api:
+    build: .
+    restart: always
+    working_dir: /app
+    environment:
+      - DB_HOST=postgres
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - MLFLOW_REGISTRY_URI=http://mlflow:5000
+    volumes:
+      - ./models:/app/models
+      - ./.env:/app/.env
+    ports:
+      - "8002:8002"
+    runtime: ${DOCKER_RUNTIME:-runc}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mlflow:
+        condition: service_healthy
+    command: bash docker/entrypoint-bert-api.sh
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8002/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 3600s
+
+  pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu
+    restart: on-failure:3
+    working_dir: /app
+    environment:
+      - DB_HOST=postgres
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - BERT_API_URL=http://bert-api:8002
+    volumes:
+      - ./chroma_db:/app/chroma_db
+      - ./models:/app/models
+      - ./attachments:/app/attachments
+      - "./store data:/app/store data"
+      - ./.env:/app/.env
+      - ./token.json:/app/token.json
+      - ./credentials.json:/app/credentials.json
+    depends_on:
+      postgres:
+        condition: service_healthy
+      bert-api:
+        condition: service_healthy
+      mlflow:
+        condition: service_healthy
+    command: bash docker/entrypoint-pipeline.sh
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu
+    restart: always
+    working_dir: /app
+    environment:
+      - DB_HOST=postgres
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - BERT_API_URL=http://bert-api:8002
+    volumes:
+      - ./chroma_db:/app/chroma_db
+      - ./models:/app/models
+      - ./mlartifacts:/app/mlartifacts
+      - ./.env:/app/.env
+    ports:
+      - "8501:8501"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      bert-api:
+        condition: service_healthy
+    command: python3 -m streamlit run dashboard/app.py --server.address 0.0.0.0 --server.port 8501 --server.headless true --server.enableCORS false --server.enableXsrfProtection false
+
+  monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu
+    restart: always
+    working_dir: /app
+    environment:
+      - DB_HOST=postgres
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - BERT_API_URL=http://bert-api:8002
+    volumes:
+      - ./models:/app/models
+      - ./mlartifacts:/app/mlartifacts
+      - ./training:/app/training
+      - ./.env:/app/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mlflow:
+        condition: service_healthy
+      bert-api:
+        condition: service_healthy
+    command: bash docker/entrypoint-monitor.sh
+
+volumes:
+  postgres_data:
+  mlflow_data:

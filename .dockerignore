@@ -1,0 +1,20 @@
+.git/
+.env
+token.json
+token_sender.json
+credentials.json
+chroma_db/
+mlartifacts/
+mlflow.db
+mlruns/
+models/
+tests/fixtures/attachments/
+tests/fixtures/*.json
+__pycache__/
+*.pyc
+.venv/
+venv/
+attachments/
+Project Description/
+deploy guide.md
+QUICKSTART.md
