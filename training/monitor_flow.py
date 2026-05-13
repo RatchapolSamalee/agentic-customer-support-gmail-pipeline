@@ -7,7 +7,6 @@ import httpx
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import mlflow
-from datetime import timedelta
 from mlflow.tracking import MlflowClient
 from prefect import flow, task
 
@@ -73,7 +72,7 @@ def reload_model() -> None:
         data = resp.json()
         logger.info("BERT API reloaded: %s", data)
     except Exception as e:
-        logger.warning("BERT API /reload failed (%s) — skipping hot-reload", e)
+        logger.warning("BERT API /reload failed (%s) -- skipping hot-reload", e)
 
 
 @flow(name="monitor-and-train")
@@ -82,27 +81,29 @@ def monitor_flow() -> None:
     last_trained_count = _get_last_trained_count()
 
     if count < TRAIN_THRESHOLD:
-        logger.info("Threshold not reached (%d/%d) — skipping", count, TRAIN_THRESHOLD)
+        logger.info("Threshold not reached (%d/%d) -- skipping", count, TRAIN_THRESHOLD)
         return
 
     if count < last_trained_count + TRAIN_THRESHOLD:
-        logger.info("Not enough new data (%d/%d needed) — skipping", count, last_trained_count + TRAIN_THRESHOLD)
+        logger.info("Not enough new data (%d/%d needed) -- skipping", count, last_trained_count + TRAIN_THRESHOLD)
         return
 
-    logger.info("New labeled data sufficient (%d >= %d) — export + train", count, last_trained_count + TRAIN_THRESHOLD)
+    logger.info("New labeled data sufficient (%d >= %d) -- export + train", count, last_trained_count + TRAIN_THRESHOLD)
 
     data_path = export_training_data()
     result = training_flow(data_path=data_path, labeled_count=count)
     promote_to_production(model_version=result["model_version"])
     reload_model()
 
-    logger.info("monitor_flow complete — v%s now in Production", result["model_version"])
+    logger.info("monitor_flow complete -- v%s now in Production", result["model_version"])
 
 
 if __name__ == "__main__":
-    # รันครั้งเดียว: python training/monitor_flow.py
-    # รันแบบ schedule ทุก 1 ชม.: ใช้ serve() หรือ deploy ผ่าน Prefect UI
-    monitor_flow.serve(
-        name="monitor-and-train-hourly",
-        interval=timedelta(hours=1),
-    )
+    import time
+    INTERVAL = int(os.getenv("MONITOR_INTERVAL_SEC", "3600"))
+    while True:
+        try:
+            monitor_flow()
+        except Exception as e:
+            logger.error("monitor_flow error: %s", e)
+        time.sleep(INTERVAL)
