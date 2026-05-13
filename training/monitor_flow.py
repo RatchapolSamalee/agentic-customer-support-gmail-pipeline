@@ -35,6 +35,24 @@ def _get_last_trained_count() -> int:
         return 0
 
 
+def _get_best_f1() -> float:
+    try:
+        mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+        client = MlflowClient()
+        versions = client.search_model_versions(f"name='{BERT_MODEL_NAME}'")
+        if not versions:
+            return 0.0
+        best = 0.0
+        for v in versions:
+            run = client.get_run(v.run_id)
+            f1 = run.data.metrics.get("macro_f1", 0.0)
+            if f1 > best:
+                best = f1
+        return best
+    except Exception:
+        return 0.0
+
+
 @task(name="count_labeled")
 def count_labeled() -> int:
     conn = get_connection()
@@ -90,12 +108,17 @@ def monitor_flow() -> None:
 
     logger.info("New labeled data sufficient (%d >= %d) -- export + train", count, last_trained_count + TRAIN_THRESHOLD)
 
+    best_f1 = _get_best_f1()
     data_path = export_training_data()
     result = training_flow(data_path=data_path, labeled_count=count)
-    promote_to_production(model_version=result["model_version"])
-    reload_model()
 
-    logger.info("monitor_flow complete -- v%s now in Production", result["model_version"])
+    new_f1 = result.get("macro_f1", 0.0)
+    if new_f1 >= best_f1:
+        promote_to_production(model_version=result["model_version"])
+        reload_model()
+        logger.info("monitor_flow complete -- v%s promoted (f1=%.4f >= best=%.4f)", result["model_version"], new_f1, best_f1)
+    else:
+        logger.info("New model f1=%.4f < best=%.4f -- skipping promotion", new_f1, best_f1)
 
 
 if __name__ == "__main__":

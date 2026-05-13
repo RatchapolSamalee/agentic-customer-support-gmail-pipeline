@@ -242,7 +242,7 @@ def log_to_mlflow(metrics: dict, model_dir: str, data_path: str, labeled_count: 
     with open(os.path.join(model_dir, "train_meta.json"), "w", encoding="utf-8") as f:
         json.dump(meta, f, indent=2, ensure_ascii=False)
 
-    return {"run_id": run_id, "model_version": mv.version}
+    return {"run_id": run_id, "model_version": mv.version, "macro_f1": metrics.get("macro_f1", 0.0)}
 
 
 @flow(name="bert-email-tagger-training")
