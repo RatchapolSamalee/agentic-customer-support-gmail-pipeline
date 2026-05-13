@@ -77,7 +77,7 @@ def export_training_data() -> str:
     current_version = _latest_version()
     existing = _load_existing(current_version)
     existing_texts = {r["text"] for r in existing}
-    max_id = max((r["id"] for r in existing), default=0)
+    max_id = max((r["id"] for r in existing if "id" in r), default=0)
 
     new_records = _fetch_labeled_from_db()
     added = 0

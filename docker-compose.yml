@@ -26,7 +26,8 @@ services:
     ports:
       - "5000:5000"
     command: >
-      mlflow ui --backend-store-uri sqlite:////app/mlflow_data/mlflow.db
+      mlflow server --backend-store-uri sqlite:////app/mlflow_data/mlflow.db
+      --default-artifact-root /app/mlartifacts
       --host 0.0.0.0 --port 5000
       --allowed-hosts "*"
     healthcheck:
