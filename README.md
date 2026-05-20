@@ -14,12 +14,19 @@ This project was built to develop skills in **MLOps and Deployment**. The system
 
 ---
 
+<br><br>
+
 <img width="1618" height="896" alt="image" src="https://github.com/user-attachments/assets/e7572360-6525-4d39-9616-d8871bdae61e" />
+
+<br><br>
 
 <img width="1623" height="911" alt="image" src="https://github.com/user-attachments/assets/75fa3810-7811-4c56-8945-f86392948619" />
 
+<br><br>
+
 <img width="1629" height="722" alt="image" src="https://github.com/user-attachments/assets/786dc941-ac40-4be8-95e8-26f70998a8b6" />
 
+<br><br>
 ---
 
 ## Table of Contents
