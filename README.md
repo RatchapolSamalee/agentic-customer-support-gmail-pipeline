@@ -8,9 +8,17 @@ This project was built to develop skills in **MLOps and Deployment**. The system
 - Dashboard: https://dashboard.ratchapol.site
 - MLflow: https://mlflow.ratchapol.site
 
-*Available 8:00 AM – 6:00 PM (UTC+7) to reduce GCP VM costs.*
+*Available 9:00 AM – 5:00 PM (UTC+7) to reduce GCP VM costs.*
 
 **Try it:** Browse the store knowledge base in the `store data/` folder, choose something you want to ask about, then send an email to **karzaman2901@gmail.com** (the store's simulated inbox). If your question matches the store's data, you will receive an automated reply in your inbox. If the question is out of scope or the system cannot find a confident answer, no reply will be sent - your email will be flagged for human review instead (**Human-in-the-Loop**).
+
+---
+
+<img width="1618" height="896" alt="image" src="https://github.com/user-attachments/assets/e7572360-6525-4d39-9616-d8871bdae61e" />
+
+<img width="1623" height="911" alt="image" src="https://github.com/user-attachments/assets/75fa3810-7811-4c56-8945-f86392948619" />
+
+<img width="1629" height="722" alt="image" src="https://github.com/user-attachments/assets/786dc941-ac40-4be8-95e8-26f70998a8b6" />
 
 ---
 
