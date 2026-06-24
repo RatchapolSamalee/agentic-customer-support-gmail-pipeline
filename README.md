@@ -1,16 +1,14 @@
 # Agentic Customer Support Gmail Pipeline
 
-> **Case study:** This system is built around a simulated electronic products store called **Fah Mai (ฟ้าใหม่)** - dataset adapted from the Mini Hackathon Super AI Engineer.
+> **Case study:** This system is built around a simulated electronic products store called **Fah Mai (ฟ้าใหม่)** - Dataset sourced the Mini Hackathon Super AI Engineer.
 
 This project was built to develop skills in **MLOps and Deployment**. The system uses the Gemini API for language tasks such as drafting replies and reviewing answers. One deliberate addition is **WangChanBERTa** (a Thai-language BERT model) for email classification - it runs locally, costs nothing per request, and improves over time by retraining on staff feedback. This also demonstrates that the pipeline can gradually reduce API dependency: if the remaining LLM calls are replaced with local models such as Qwen or Typhoon, the entire system can run on-premise with no external API at all.
 
 **Live Links:**
 Live Links:
 
-Live Links:
-
-~~Dashboard: https://dashboard.ratchapol.site~~  
-~~MLflow: https://mlflow.ratchapol.site~~
+**Dashboard**: ~~https://dashboard.ratchapol.site~~  
+**MLflow**: ~~https://mlflow.ratchapol.site~~
 
 ***Live deployment is currently unavailable because the GCP free credit period has ended. Example screenshots are provided below instead.***
 
