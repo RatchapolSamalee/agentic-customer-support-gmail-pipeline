@@ -7,8 +7,10 @@ This project was built to develop skills in **MLOps and Deployment**. The system
 **Live Links:**
 Live Links:
 
-~~[Dashboard](https://dashboard.ratchapol.site)~~  
-~~[MLflow](https://mlflow.ratchapol.site)~~
+Live Links:
+
+~~Dashboard: https://dashboard.ratchapol.site~~  
+~~MLflow: https://mlflow.ratchapol.site~~
 
 ***Live deployment is currently unavailable because the GCP free credit period has ended. Example screenshots are provided below instead.***
 
