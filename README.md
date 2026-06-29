@@ -312,38 +312,67 @@ BERT training will take longer (~30–60 min instead of ~5–15 min) but everyth
 
 ## Project Structure
 
-```
+```text
 ├── dashboard/
-│   └── app.py                    Streamlit dashboard
+│   └── app.py                              Streamlit dashboard
 ├── docker/
-│   ├── entrypoint-bert-api.sh    BERT API startup + initial training
-│   ├── entrypoint-pipeline.sh    Pipeline startup + knowledge base ingest
-│   └── entrypoint-monitor.sh     Monitor startup
+│   ├── entrypoint-bert-api.sh              BERT API startup + initial training
+│   ├── entrypoint-pipeline.sh              Pipeline startup + knowledge base ingest
+│   └── entrypoint-monitor.sh               Monitor startup
+├── mlops/
+│   ├── mlflow_server.sh                    Standalone MLflow server script
+│   ├── promotion.py                        Model promotion rules/helper
+│   └── flows/
+│       └── train_bert_flow.py              Alternative/older BERT training flow
 ├── scripts/
-│   └── ingest_knowledge_base.py  Ingest docs into ChromaDB
+│   ├── ingest_knowledge_base.py            Ingest docs into ChromaDB
+│   └── run_pipeline.py                     Script entrypoint for batch/watch pipeline
+├── services/
+│   └── bert_api/
+│       └── main.py                         Alternative BERT API implementation
 ├── src/
-│   ├── db/base.py                DB connection and schema
-│   ├── api.py                    FastAPI BERT API
-│   ├── chains.py                 LLM chains (screen, generate, review)
-│   ├── classifier.py             BERT tagger + MLflow integration
-│   ├── config.py                 Config from .env
-│   ├── gmail_client.py           Gmail API client
-│   ├── ocr.py                    OCR (image + PDF via Gemini Vision)
-│   ├── pipeline.py               Email processing orchestration
-│   └── rag.py                    Hybrid RRF RAG
+│   ├── __init__.py                         Marks src as a package
+│   ├── api.py                              FastAPI BERT API
+│   ├── chains.py                           LLM chains (screen, tag, generate, review)
+│   ├── classifier.py                       BERT tagger + MLflow integration
+│   ├── classifier_client.py                HTTP client for BERT API
+│   ├── config.py                           Config from .env
+│   ├── gmail_client.py                     Gmail API client
+│   ├── models.py                           Pydantic models used across the system
+│   ├── ocr.py                              OCR (image + PDF via Gemini Vision)
+│   ├── pipeline.py                         Email processing orchestration
+│   ├── rag.py                              Hybrid RRF RAG
+│   └── db/
+│       ├── __init__.py                     DB helper exports
+│       ├── base.py                         DB connection and schema
+│       ├── emails.py                       Email + attachment DB operations
+│       └── pipeline.py                     Prediction/reply/send-log DB operations
 ├── training/
-│   ├── data/                     Training datasets (JSON)
-│   ├── export_task.py            Export labeled DB data to JSON
-│   ├── monitor_flow.py           Prefect: threshold check + retrain trigger
-│   ├── train_flow.py             Prefect: fine-tune BERT + register in MLflow
-│   └── rollback.py               Roll back to previous model version
-├── store data/knowledge_base/    Source documents for RAG
-├── docker-compose.yml
-├── Dockerfile                    GPU-enabled image (pytorch/pytorch base)
-├── Dockerfile.cpu                CPU-only image for non-GPU services
-├── requirements.txt
-└── .env.example
+│   ├── data/
+│   │   └── train_set_v1.json               Initial training dataset
+│   ├── notebooks/
+│   │   └── wangchanberta_finetune_1st_model.ipynb  Early experimentation notebook
+│   ├── export_task.py                      Export labeled DB data to JSON
+│   ├── monitor_flow.py                     Prefect: threshold check + retrain trigger
+│   ├── train_flow.py                       Prefect: fine-tune BERT + register in MLflow
+│   └── rollback.py                         Roll back to previous model version
+├── store data/
+│   └── knowledge_base/
+│       ├── policies/                       Policy documents for RAG
+│       ├── products/                       Product markdown files for RAG
+│       └── store_info/                     General store info / FAQ for RAG
+├── .dockerignore                           Docker build ignore rules
+├── .env.example                            Example environment variables
+├── .gitignore                              Git ignore rules for secrets/generated files
+├── Dockerfile                              GPU-enabled image (pytorch/pytorch base)
+├── Dockerfile.cpu                          CPU-only image for non-GPU services
+├── README.md                               Project overview and quick start
+├── Workflow.png                            System workflow diagram
+├── docker-compose.yml                      Multi-service local/cloud deployment
+└── requirements.txt                        Python dependencies
 ```
+
+Runtime-only files such as `.env`, `credentials.json`, `token.json`, `models/`, `chroma_db/`, `attachments/`, and `mlartifacts/` are intentionally **not committed to GitHub** and must be provided locally or via mounted volumes at runtime.
 
 ---
 
