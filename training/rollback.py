@@ -49,7 +49,7 @@ def rollback(version: int) -> None:
 
     mv = client.get_model_version(BERT_MODEL_NAME, str(version))
     run_id = mv.run_id
-    logger.info("Downloading model v%d from run %s ...", version, run_id)
+    logger.info("Downloading model v%d from run %s", version, run_id)
 
     tmp_dir = f"models/_rollback_v{version}"
     local_path = mlflow.artifacts.download_artifacts(

@@ -14,7 +14,4 @@ __pycache__/
 *.pyc
 .venv/
 venv/
-attachments/
-Project Description/
-deploy guide.md
-QUICKSTART.md
+

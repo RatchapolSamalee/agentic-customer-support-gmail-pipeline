@@ -7,7 +7,7 @@ google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
 
-# LLM & RAG (V1 - Gemini)
+# LLM & RAG
 google-generativeai
 langchain
 langchain-google-genai
@@ -32,7 +32,7 @@ plotly
 pandas
 numpy
 
-# BERT Classifier (V2)
+# BERT Classifier
 torch
 transformers>=4.40.0,<4.45.0
 datasets>=2.18.0
@@ -43,16 +43,16 @@ matplotlib
 sentencepiece
 tiktoken
 
-# BERT API (V2)
+# BERT API
 fastapi
 uvicorn[standard]
 httpx
 
-# MLOps (V2)
+# MLOps
 mlflow>=2.10.0
 prefect>=2.14.0
 
-# Hybrid RAG (V2)
+# Hybrid RAG
 sentence-transformers
 rank-bm25
 rapidfuzz
