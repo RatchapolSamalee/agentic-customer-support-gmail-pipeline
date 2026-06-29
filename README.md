@@ -372,7 +372,7 @@ BERT training will take longer (~30–60 min instead of ~5–15 min) but everyth
 └── requirements.txt                        Python dependencies
 ```
 
-Runtime-only files such as `.env`, `credentials.json`, `token.json`, `models/`, `chroma_db/`, `attachments/`, and `mlartifacts/` are intentionally **not committed to GitHub** and must be provided locally or via mounted volumes at runtime.
+Runtime-only files such as `.env`, `credentials.json`, and `token.json` are not included in the repository for security reasons and must be created and configured locally by the user before running the project.
 
 ---
 
