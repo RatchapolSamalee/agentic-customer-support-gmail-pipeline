@@ -314,7 +314,7 @@ BERT training will take longer (~30–60 min instead of ~5–15 min) but everyth
 
 ```text
 ├── dashboard/
-│   └── app.py                              Streamlit dashboard
+│   └── app.py                              Dashboard (Streamlit)
 ├── docker/
 │   ├── entrypoint-bert-api.sh              BERT API startup + initial training
 │   ├── entrypoint-pipeline.sh              Pipeline startup + knowledge base ingest
