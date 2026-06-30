@@ -327,9 +327,6 @@ BERT training will take longer (~30–60 min instead of ~5–15 min) but everyth
 ├── scripts/
 │   ├── ingest_knowledge_base.py            Ingest docs into ChromaDB
 │   └── run_pipeline.py                     Script entrypoint for batch/watch pipeline
-├── services/
-│   └── bert_api/
-│       └── main.py                         Alternative BERT API implementation
 ├── src/
 │   ├── __init__.py                         Marks src as a package
 │   ├── api.py                              FastAPI BERT API
