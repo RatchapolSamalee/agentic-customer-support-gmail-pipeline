@@ -145,6 +145,7 @@ The system is designed to improve itself over time using staff corrections as tr
 |-----------|-----------|
 | Email | Google Gmail API |
 | LLM | Gemini 2.5 Flash |
+| AI | Lagnchain + Langgraph |
 | Classifier | WangChanBERTa (PyTorch, fine-tuned) |
 | RAG | ChromaDB + BM25 + BGE-M3 + RRF + BGE Reranker |
 | Database | PostgreSQL 15 |
