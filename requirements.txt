@@ -1,3 +1,4 @@
+# Python dependencies for the email pipeline, dashboard, API, training, and MLOps services.
 # Core
 python-dotenv
 pydantic

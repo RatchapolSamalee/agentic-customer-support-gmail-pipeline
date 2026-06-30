@@ -1,3 +1,4 @@
+# Roll back the local and Production BERT model to an older registered MLflow version.
 """
 Model Rollback Utility
 ======================
